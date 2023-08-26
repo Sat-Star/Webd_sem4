@@ -11,3 +11,13 @@ const Button = ({ color, text, onClick }) => {
         </button>
     );
 };
+
+Button.defaultProps = {
+    color: "steelblue"
+};
+Button.propTypes = {
+    text: PropTypes.string.isRequired,
+    color: PropTypes.string,
+    onClick: PropTypes.func
+};
+export default Button;
