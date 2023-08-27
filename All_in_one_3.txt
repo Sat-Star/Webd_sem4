@@ -1,0 +1,116 @@
+<-- 3a -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exp3a</title>
+</head>
+<body>
+    <div onmousedown="mDown(this)" onmouseup="mUp(this)" style="background-color:#D94A38;width:90px;height: 20px;padding: 40px;">
+    Click Me</div>
+    <script>
+        function mDown(obj){
+            obj.style.backgroundColor="#1ec5e5";
+            obj.innerHTML = "Release Me";
+        }
+
+        function mUp(obj){
+            obj.style.backgroundColor = "yellow";
+            obj.innerHTML = "Thank You";
+        }
+    </script>
+</body>
+</html>
+
+<-- 3b -->
+
+<html>
+<head>
+<title>Events </title>
+</head>
+
+<script type="text/javascript" >
+function msg()
+{ var name= document.person.n1;
+var usn= document.person.n2;
+alert ("Hello" + name.value + "USN" + usn.value);
+}
+</script>
+
+<body>
+</br></br>
+<form name="person" >
+
+Enter The name </br>
+<input type="text" name="n1"></br></br>
+
+Enter The USN </br>
+<input type="text" name="n2">
+
+<input type="submit" onClick="msg();">
+
+</form>
+</body>
+</html>
+
+<-- 3c -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Capital of countries</title>
+
+    <style>
+        p{
+            color:red;
+            font-family:monospace ;
+            font-weight: bold;
+            font-size: 100;
+        }
+    </style>
+
+    <script language = "javascript">
+        function capital()
+        {
+            var cunt = document.forms["form1"].country.value;
+            var capital = "Please select any country";
+            if (cunt=="INDIA")
+            capital = "NEW DELHI";
+            if (cunt=="USA")
+            capital = "WASHINGTON DC";
+            if (cunt=="NETHERLANDS")
+            capital = "AMSTERDAM";
+            if (cunt=="RUSSIA")
+            capital = "MOSCOW";
+            if (cunt=="JAPAN")
+            capital = "TOKYO";
+            if (cunt=="select")
+            capital = "Please select any country";
+
+            document.getElementById("capt").innerHTML=capital;
+        }
+    </script>
+</head>
+<body bgcolor="cyan">
+    <form name="form1">
+        <br>
+        <center>
+            Select a country : <select name="country" onchange="capital()">
+            <option value="select">SELECT</option>
+            <option value="INDIA">INDIA</option>
+            <option value="USA">USA</option>
+            <option value="NETHERLANDS">NETHERLANDS</option>
+            <option value="RUSSIA">RUSSIA</option>
+            <option value="JAPAN">JAPAN</option>
+            </select>
+            <br><br>
+            <b><font color="white" size="6">Capital is :</font></b>
+            <p id="capt"></p>
+        </center>
+    </form>
+</body>
+</html>
