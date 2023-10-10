@@ -30,7 +30,6 @@ let handleUserJoined = async (user, mediaType) => {
     remoteUsers[user.uid] = user
     await client.subscribe(user, mediaType)
 
-    8
 
     if (mediaType === 'video') {
         let player = document.getElementById('user-container-${user.uid}')
