@@ -1,0 +1,388 @@
+AddTask.jsx
+
+import React, { useState } from "react";
+const AddTask = ({ addTask }) => {
+    const [task, setTask] = useState({
+        text: "",
+        day: ""
+    });
+    const [reminder, setReminder] = useState(false);
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setTask((prevTask) => {
+            return {
+                ...prevTask,
+                [name]: value
+            };
+        });
+    };
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        if (!task.text) {
+            alert("Please add a task");
+        }
+        addTask({
+            text: task.text,
+            day: task.day,
+            reminder: reminder
+        });
+        setTask({
+            text: "",
+            day: ""
+        });
+        setReminder(false);
+    };
+    return (
+        <form className="add-form" onSubmit={handleSubmit}>
+            <div className="form-control">
+                <label>Task</label>
+                <input
+                    name="text"
+                    type="text"
+                    placeholder="Add Task"
+                    value={task.text}
+                    onChange={handleChange}
+                />
+            </div>
+            <div className="form-control">
+                <label>Day & Time</label>
+                <input
+                    type="text"
+                    placeholder="Add Day & Time"
+                    name="day"
+                    value={task.day}
+                    onChange={handleChange} />
+            </div>
+            <div className="form-control form-control-check">
+                <label>Set Reminder</label>
+                <input
+                    type="checkbox"
+                    name="reminder"
+                    onChange={(e) => setReminder(e.currentTarget.checked)}
+                    checked={reminder}
+                />
+            </div>
+            <input type="submit" value="Save Task" className="btn btn-block" />
+        </form>
+    );
+};
+export default AddTask;
+
+
+App.jsx
+
+import React, { useState, useEffect } from "react";
+import AddTask from "./components/AddTask";
+import Header from "./components/Header";
+import Tasks from "./components/Tasks";
+import "./styles.css";
+const getLocalStorage = () => {
+    let tasks = localStorage.getItem("myTasks");
+    if (tasks) {
+        return JSON.parse(localStorage.getItem("myTasks"));
+    } else {
+        return [];
+    }
+};
+export default function App() {
+    const [showAddTask, setShowAddTask] = useState(false);
+    const [tasks, setTasks] = useState(getLocalStorage());
+
+    // Add Task
+    const addTask = (task) => {
+        const id = Math.floor(Math.random() * 10000 + 1);
+        const newTask = {
+            id: id,
+            ...task
+        };
+        setTasks([...tasks, newTask]);
+    };
+    // Delete task
+    const deleteTask = (id) => {
+        setTasks(tasks.filter((task) => task.id !== id));
+    };
+    // Toggle reminder
+    const toggleReminder = (id) => {
+        setTasks(
+            tasks.map((task) =>
+                task.id === id
+                    ? {
+                        ...task,
+                        reminder: !task.reminder
+                    }
+                    : task
+            )
+        );
+    };
+    // Show Form
+    const showTaskForm = () => {
+        setShowAddTask(!showAddTask);
+    };
+    useEffect(() => {
+        localStorage.setItem("myTasks", JSON.stringify(tasks));
+    }, [tasks]);
+    return (
+        <div className="container">
+            <Header onAdd={showTaskForm} title="Task Tracker"
+                showAdd={showAddTask} />
+            {showAddTask && <AddTask addTask={addTask} />}
+            {tasks.length > 0 ? (
+                <Tasks
+                    tasks={tasks}
+                    onDelete={deleteTask}
+                    toggleReminder={toggleReminder}
+                />
+            ) : (
+                "No more tasks"
+            )}
+        </div>
+    );
+}
+
+
+Button.jsx
+
+import React from "react";
+import PropTypes from "prop-types";
+const Button = ({ color, text, onClick }) => {
+    return (
+        <button
+            style={{ backgroundColor: color }}
+            className="btn"
+            onClick={onClick}
+        >
+            {text}
+        </button>
+    );
+};
+
+Button.defaultProps = {
+    color: "steelblue"
+};
+Button.propTypes = {
+    text: PropTypes.string.isRequired,
+    color: PropTypes.string,
+    onClick: PropTypes.func
+};
+export default Button;
+
+
+Header.jsx
+
+import React from "react";
+import PropTypes from "prop-types";
+import Button from "./Button";
+const Header = ({ title, onAdd, showAdd }) => {
+    return (
+        <header className="header">
+            <h1>{title}</h1>
+            <Button
+                color={showAdd ? "red" : "green"}
+                text={showAdd ? "Close" : "Add"}
+                onClick={onAdd}
+            />
+        </header>
+    );
+};
+Header.defaultProps = {
+    title: "Task Runner"
+};
+Header.propTypes = {
+    title: PropTypes.string.isRequired
+};
+export default Header;
+
+
+
+Task.jsx
+
+import React from "react";
+import { FaTimes } from "react-icons/fa";
+const Task = ({ task, handleDelete, toggleReminder }) => {
+    return (
+        <div
+            className={`task ${task.reminder ? "reminder" : ""}`}
+            onDoubleClick={() => toggleReminder(task.id)}
+        >
+            <h3>
+                {task.text}{" "}
+                <FaTimes
+                    style={{ color: "red", cursor: "pointer" }}
+                    onClick={() => handleDelete(task.id)}
+                />
+            </h3>
+            <p>{task.day}</p>
+        </div>
+    );
+};
+export default Task;
+
+
+
+Tasks.jsx
+
+
+import React from "react";
+import Task from "./Task";
+const Tasks = ({ tasks, onDelete, toggleReminder }) => {
+    return (
+        <>
+            {
+                tasks.map((task) => {
+                    return (
+                        <Task
+                            key={task.id}
+                            task={task}
+                            handleDelete={onDelete}
+                            toggleReminder={toggleReminder}
+                        />
+                    );
+                })
+            }
+        </>
+    );
+};
+export default Tasks;
+
+
+
+
+db.json
+
+{
+    "tasks": [
+        {
+            "id": 1,
+            "text": "Doctors Appointment",
+            "day": "Feb 5th at 2:30pm",
+            "reminder": true
+        },
+        {
+            "id": 2,
+            "text": "Meeting at School",
+            "day": "Feb 8th at 9:30am",
+            "reminder": true
+        },
+        {
+            "id": 3,
+            "text": "Grocery Shopping",
+            "day": "Feb 10th at 12:30pm",
+            "reminder": false
+        }
+    ]
+}
+
+
+styles.css
+
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Poppins', sans -serif;
+}
+
+.container {
+    max-width: 500px;
+    margin: 30px auto;
+    overflow: auto;
+    min-height: 300px;
+    border: 1px solid steelblue;
+    padding: 30px;
+    border-radius: 5px;
+}
+
+.header {
+    display: flex;
+    justify-content: space -between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.btn {
+    display: inline-block;
+    background: #000;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    margin: 5px;
+    border-radius: 5px;
+    cursor: pointer;
+    text-decoration: none;
+    font-size: 15px;
+    font-family: inherit;
+}
+
+.btn:focus {
+    outline: none;
+}
+
+.btn:active {
+    transform: scale (0.98);
+}
+
+.btn -block {
+    display: block;
+    width: 100%;
+}
+
+.task {
+    background: #f4f4f4;
+    margin: 5px;
+    padding: 10px 20px;
+    cursor: pointer;
+}
+
+.task.reminder {
+    border-left: 5px solid green;
+}
+
+.task h3 {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.add -form {
+    margin-bottom: 40px;
+}
+
+.form -control {
+    margin: 20px 0;
+}
+
+.form -control label {
+    display: block;
+}
+
+.form -control input {
+    width: 100%;
+    height: 40px;
+    margin: 5px;
+    padding: 3px 7px;
+    font-size: 17px;
+}
+
+.form -control -check {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.form-control-check label {
+    flex: 1;
+}
+
+.form-control-check input {
+    flex: 2;
+    height: 20px;
+}
+
+footer {
+    margin-top: 30px;
+    text-align: center;
+}
