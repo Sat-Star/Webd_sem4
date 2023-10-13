@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agora Web RTC</title>
+    <style>
+        body {
+            background-color: #223F4A;
+            background-image: linear-gradient(to right, #2C5263, #112229);
+        }
+
+        p {
+            text-align: center;
+            width: 140px;
+            border: 15px #5F9EA0;
+            padding: 18px;
+            margin-left: 685px;
+            margin-top: 325px;
+            background-color: #5F9EA0;
+            font-size: 19px;
+            color: white;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        #joi {
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <div>
+        <p id="joi">Join Stream</p>
+    </div>
+    <script>
+        const poi = document.getElementById('joi');
+        poi.addEventListener('click',function(){
+            window.open("nextlevel.html", "_self");
+        })
+    </script>
+</body>
+
+</html>
