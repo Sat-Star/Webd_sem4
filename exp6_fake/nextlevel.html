@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome</title>
+    <style>
+        body {
+            background-color: #223F4A;
+            background-image: linear-gradient(to right, #2C5263, #112229);
+        }
+        .black{
+            width:auto;
+            background-color: black;
+            border: 15px black;
+            height: 650px;
+            margin-left: 60px;
+            margin-right: 60px;
+        }
+        
+        #leave, #mic, #camera{
+            background-color: #5F9EA0;
+            font-size: 16px;
+            text-align: center;
+            color: white;
+            display: inline-block;
+            margin-top: 10px;
+            padding: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="black"></div>
+    <center>
+    <div class="butt">
+        <input type="button" id="leave" value="Leave Stream"></button>
+        <input type="button" id="mic" value="Mic on"></button>
+        <input type="button" id="camera" value="Camera on"></button>
+    </div>
+</center>
+<script>
+    const mic = document.getElementById('mic');
+    const camera = document.getElementById('camera');
+    const leave = document.getElementById('leave');
+
+    mic.addEventListener('click', function(){
+        if(mic.value === 'Mic on'){
+            mic.value = 'Mic off';
+            mic.style.backgroundColor = 'red';
+        }
+        else{
+            mic.value = 'Mic on';
+            mic.style.backgroundColor = '#5F9EA0';
+        }
+
+    });
+
+    camera.addEventListener('click', function(){
+        if(camera.value === 'Camera on'){
+            camera.value = 'Camera off';
+            camera.style.backgroundColor = 'red';
+        }
+        else{
+            camera.value = 'Camera on';
+            camera.style.backgroundColor = '#5F9EA0';
+        }
+    });
+
+    leave.addEventListener('click', function(){
+        window.open('index.html', "_self");
+    });
+</script>
+</body>
+</html>
